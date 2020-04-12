@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  mysql-dev:
+    image: mysql:5.7.29
+    container_name: orion_db
+    environment:
+      MYSQL_ROOT_PASSWORD: abc123
+      MYSQL_DATABASE: orion
+    volumes:
+      - ./database/data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+  orion-web:
+    image: aleonard9/orion-web
+    container_name: orion_web
+    command: /sbin/apachectl -D FOREGROUND
+    ports:
+      - "80:80"
+    environment:
+      mysql_host: mysql-dev
+    tty: true
+    depends_on:
+        - mysql-dev
+    links:
+        - mysql-dev
