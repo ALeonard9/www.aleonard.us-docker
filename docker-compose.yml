@@ -15,7 +15,6 @@ services:
   orion-web:
     image: aleonard9/orion-web
     container_name: orion_web
-    command: /sbin/apachectl -D FOREGROUND
     ports:
       - "80:80"
     environment:
