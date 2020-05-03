@@ -166,7 +166,7 @@ CREATE TABLE `g_user_tvepisodes` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`aleonard9`@`%`*/ /*!50003 TRIGGER `orion`.`g_user_tvepisodes_AFTER_INSERT` AFTER INSERT ON `g_user_tvepisodes` FOR EACH ROW
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `orion`.`g_user_tvepisodes_AFTER_INSERT` AFTER INSERT ON `g_user_tvepisodes` FOR EACH ROW
 BEGIN
   DECLARE vtv_id int DEFAULT (SELECT e.tv_id FROM orion.g_user_tvepisodes g, orion.tvepisodes e WHERE g.tvepisode_id = e.id AND g.g_id = NEW.g_id LIMIT 1 );
   DECLARE vwatched int DEFAULT (SELECT COUNT(*) FROM orion.g_user_tvepisodes g, orion.tvepisodes e WHERE g.tvepisode_id = e.id AND tv_id = vtv_id AND user_id = NEW.user_id AND watched = 1);
@@ -198,7 +198,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`aleonard9`@`%`*/ /*!50003 TRIGGER `orion`.`g_user_tvepisodes_AFTER_UPDATE` AFTER UPDATE ON `g_user_tvepisodes` FOR EACH ROW
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `orion`.`g_user_tvepisodes_AFTER_UPDATE` AFTER UPDATE ON `g_user_tvepisodes` FOR EACH ROW
 BEGIN
   DECLARE vtv_id int DEFAULT (SELECT e.tv_id FROM orion.g_user_tvepisodes g, orion.tvepisodes e WHERE g.tvepisode_id = e.id AND g.g_id = NEW.g_id LIMIT 1 );
   DECLARE vwatched int DEFAULT (SELECT COUNT(*) FROM orion.g_user_tvepisodes g, orion.tvepisodes e WHERE g.tvepisode_id = e.id AND tv_id = vtv_id AND user_id = NEW.user_id AND watched = 1);
@@ -233,7 +233,7 @@ CREATE TABLE `g_user_videogames` (
   `videogames_id` int(11) DEFAULT NULL,
   `rank` int(11) DEFAULT NULL,
   `completed` int(11) DEFAULT NULL,
-  `notes` blob,
+  `notes` longtext,
   `g_id` int(11) NOT NULL AUTO_INCREMENT,
   `g_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `g_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -254,6 +254,11 @@ CREATE TABLE `movies` (
   `title` varchar(255) DEFAULT NULL,
   `imdb` varchar(40) DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `release_date` timestamp NULL,
+  `rating_imdb` float NULL,
+  `runtime` int NULL,
+  `language` varchar(40) NULL,
+  `rated` varchar(11) NULL,
   `created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `poster_url` varchar(500) DEFAULT NULL,
@@ -338,6 +343,11 @@ CREATE TABLE `videogames` (
   `updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `igdb` int(11) DEFAULT NULL,
   `poster_url` varchar(100) DEFAULT NULL,
+  `release_date` timestamp DEFAULT NULL,
+  `rating` float DEFAULT NULL,
+  `time_to_beat` int(11) DEFAULT NULL,
+  `igdb_last_update` timestamp DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `igdb_UNIQUE` (`igdb`)
 ) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
