@@ -15,11 +15,22 @@ services:
   orion-web:
     image: aleonard9/orion-web
     container_name: orion_web
-    command: /sbin/apachectl -D FOREGROUND
+    ports:
+      - "8000:80"
+    env_file:
+      - orion/dev.env
+    tty: true
+    depends_on:
+      - mysql-dev
+    links:
+      - mysql-dev
+  phoenxi-web:
+    build: orion/.
+    container_name: phoenix_web
     ports:
       - "80:80"
-    environment:
-      mysql_host: mysql-dev
+    env_file:
+      - orion/dev.env
     tty: true
     depends_on:
       - mysql-dev

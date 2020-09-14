@@ -1,2 +1,4 @@
 database/data/*
 database/init/DummyData.sql
+*.env
+orion/config/ssl/*
