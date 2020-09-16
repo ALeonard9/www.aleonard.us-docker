@@ -26,6 +26,7 @@ services:
       - mysql-dev
   phoenxi-web:
     build: orion/.
+    # image: aleonard9/orion-web:dev
     container_name: phoenix_web
     ports:
       - "80:80"
