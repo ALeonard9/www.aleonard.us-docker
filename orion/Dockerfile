@@ -4,7 +4,7 @@ RUN yum -y update && \
     rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm && \
     yum clean all && \
-    yum install -y php55w php55w-mysql php55w-pdo php55w-mcrypt mariadb unzip wget mod_ssl && \
+    yum install -y git php55w php55w-mysql php55w-pdo php55w-mcrypt mariadb unzip wget mod_ssl && \
     wget https://orion-src.s3.us-east-2.amazonaws.com/orion-dev.zip -P /tmp && \
     unzip -o -u /tmp/orion-dev.zip -d /var/www/ && \
     cd /var/www/cgi-bin/composer && \ 

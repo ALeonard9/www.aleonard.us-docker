@@ -12,20 +12,10 @@ services:
       - ./database/init:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
-  orion-web:
-    image: aleonard9/orion-web
-    container_name: orion_web
-    ports:
-      - "8000:80"
-    env_file:
-      - orion/dev.env
-    tty: true
-    depends_on:
-      - mysql-dev
-    links:
-      - mysql-dev
-  phoenxi-web:
-    build: orion/.
+  phoenix-web:
+    build:
+      context: orion/.
+      target: dev
     # image: aleonard9/orion-web:dev
     container_name: phoenix_web
     ports:
