@@ -19,7 +19,7 @@ fi
 # Prompt mods
 # -----------------------
 # Hostname in green (from 256 color chart)
-PS1="$(tput setaf 118)phoenix_web \w";
+PS1="$(tput setaf 118)orion_web \w";
 PS1+=" $(tput sgr0): ";
 export PS1;
 

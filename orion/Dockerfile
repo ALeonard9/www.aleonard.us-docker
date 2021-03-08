@@ -1,21 +1,14 @@
-FROM centos:7 AS dev
+FROM centos:7 AS local
 
 RUN yum -y update && \
     rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm && \
     yum clean all && \
-    yum install -y git php55w php55w-mysql php55w-pdo php55w-mcrypt mariadb unzip wget mod_ssl && \
-    wget https://orion-src.s3.us-east-2.amazonaws.com/orion-dev.zip -P /tmp && \
-    unzip -o -u /tmp/orion-dev.zip -d /var/www/ && \
-    cd /var/www/cgi-bin/composer && \ 
-    rm /tmp/orion-dev.zip && \
-    curl -s https://getcomposer.org/installer | php && \
-    /bin/php /var/www/cgi-bin/composer/composer.phar install && \
-    mkdir /var/www/cgi-bin/debug
+    yum install -y git php55w php55w-mysql php55w-pdo php55w-mcrypt mariadb unzip wget mod_ssl
 
-COPY config/apache_config/orion_dev.conf /etc/httpd/conf.d/orion.conf
+COPY config/apache_config/orion_local.conf /etc/httpd/conf.d/orion.conf
 
-COPY debug /var/www/cgi-bin/debug
+COPY debug /tmp/debug
 
 COPY config/.bashrc /root/.bashrc
 
@@ -28,7 +21,11 @@ ENTRYPOINT ["/data/docker-entrypoint.sh"]
 
 EXPOSE 80
 
-FROM dev as prod
+FROM local as dev
+
+COPY config/apache_config/orion_dev.conf /etc/httpd/conf.d/orion.conf
+
+FROM local as prod
 
 COPY config/apache_config/orion.conf /etc/httpd/conf.d/orion.conf
 
