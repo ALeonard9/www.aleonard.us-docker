@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: orion web server
+Resources:
+  orionWsSg:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: orion-docker-web-sg
+      GroupDescription: Opens 80 and 443 to public
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: HTTP
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+        - CidrIp: 0.0.0.0/0
+          Description: HTTPS
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+      VpcId: vpc-1735997e
+  orionWs:
+    Type: AWS::EC2::SpotFleet
+    DependsOn:
+      - orionWsSg
+    Properties:
+      SpotFleetRequestConfigData:
+        AllocationStrategy: lowestPrice
+        IamFleetRole: arn:aws:iam::371624369200:role/aws-ec2-spot-fleet-tagging-role
+        LaunchSpecifications:
+          - BlockDeviceMappings:
+              - DeviceName: "/dev/xvda"
+                Ebs:
+                  DeleteOnTermination: true
+                  VolumeType: "gp2"
+                  VolumeSize: 8
+                  SnapshotId: "snap-0887a002f2da6f797"
+            IamInstanceProfile:
+              Arn: arn:aws:iam::371624369200:instance-profile/orionRole-orionInstanceProfile-1E8GAGSGJBKMR
+            ImageId: ami-06b6681e47d5815be
+            InstanceType: t3a.micro
+            KeyName: orion
+            SecurityGroups:
+              - GroupId: !Ref orionWsSg
+            SubnetId: "subnet-c45d9cbf, subnet-6e819b24, subnet-78db6411"
+            TagSpecifications:
+              - ResourceType: instance
+                Tags:
+                  - Key: Name
+                    Value: orion-ws
+            UserData:
+              Fn::Base64: !Sub |
+                #!/bin/bash -xe
+                yum update -y
+                instanceid=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`
+                aws ec2 associate-address --region ${AWS::Region} --instance-id $instanceid --public-ip 3.16.200.208 >> /tmp/eni.log
+                service docker start
+                mkdir -p /opt/orion
+                aws s3 cp s3://orion-env/prod.env /opt/orion/prod.env
+                echo "45 4 * * * root docker run -i --env-file /opt/orion/prod.env --name orion_updateTv --rm 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod /bin/bash -c '/data/runcommand-entrypoint.sh /var/www/cgi-bin/tv /var/www/cgi-bin/tv/updatetv.php' >> /var/log/updatetv.cron.log" >> /etc/cron.d/orion.cron
+                echo "45 5 * * * root docker run -i --env-file /opt/orion/prod.env --name orion_updateEpisodes --rm 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod /bin/bash -c '/data/runcommand-entrypoint.sh /var/www/cgi-bin/tv /var/www/cgi-bin/tv/updateepisodes.php' >> /var/log/updateepisodes.cron.log" >> /etc/cron.d/orion.cron
+                aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 371624369200.dkr.ecr.us-east-2.amazonaws.com;docker pull 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod
+                docker run -d -p 80:80 -p 443:443 --name orion_web --env-file /opt/orion/prod.env --rm 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod /bin/bash -c "/data/docker-entrypoint.sh"
+        SpotPrice: 0.004
+        TargetCapacity: 1
+        TerminateInstancesWithExpiration: false
+        Type: maintain
+        ValidFrom: 2018-12-09T03:38:27Z
+        ValidUntil: 2022-12-09T03:38:27Z

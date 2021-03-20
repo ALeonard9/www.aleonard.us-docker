@@ -71,6 +71,7 @@ CREATE TABLE `g_user_books` (
   `completed` int(11) DEFAULT NULL,
   `g_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `g_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `g_first` timestamp NULL,
   PRIMARY KEY (`g_id`),
   UNIQUE KEY `unique_index` (`user_id`,`books_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
@@ -92,6 +93,7 @@ CREATE TABLE `g_user_countries` (
   `g_id` int(11) NOT NULL AUTO_INCREMENT,
   `g_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `g_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `g_first` timestamp NULL,
   PRIMARY KEY (`g_id`),
   UNIQUE KEY `unique_index` (`user_id`,`countries_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
@@ -113,6 +115,7 @@ CREATE TABLE `g_user_movies` (
   `g_id` int(11) NOT NULL AUTO_INCREMENT,
   `g_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `g_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `g_first` timestamp NULL,
   PRIMARY KEY (`g_id`),
   UNIQUE KEY `unique_index` (`user_id`,`movies_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1095 DEFAULT CHARSET=utf8;
@@ -153,6 +156,7 @@ CREATE TABLE `g_user_tvepisodes` (
   `watched` int(11) DEFAULT NULL,
   `g_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `g_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `g_first` timestamp NULL,
   PRIMARY KEY (`g_id`),
   UNIQUE KEY `unique_index` (`user_id`,`tvepisode_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21288 DEFAULT CHARSET=utf8;
@@ -237,6 +241,7 @@ CREATE TABLE `g_user_videogames` (
   `g_id` int(11) NOT NULL AUTO_INCREMENT,
   `g_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `g_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `g_first` timestamp NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`g_id`),
   UNIQUE KEY `unique_index` (`user_id`,`videogames_id`)

@@ -12,12 +12,11 @@ COPY debug /tmp/debug
 
 COPY config/.bashrc /root/.bashrc
 
-COPY config/docker-entrypoint.sh /data/
+COPY config/docker-entrypoint.sh config/runcommand-entrypoint.sh /data/
 
 RUN chmod -v +x /data/docker-entrypoint.sh  && \
+    chmod -v +x /data/runcommand-entrypoint.sh  && \
     chmod -v +x /etc/httpd/conf.d/orion.conf
-
-ENTRYPOINT ["/data/docker-entrypoint.sh"]
 
 EXPOSE 80
 

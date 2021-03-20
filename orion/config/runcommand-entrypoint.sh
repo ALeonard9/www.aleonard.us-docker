@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 wget https://orion-src.s3.us-east-2.amazonaws.com/orion-$ORION_ENV.zip -P /tmp
 unzip -o -u /tmp/orion-$ORION_ENV.zip -d /var/www/
@@ -7,11 +7,7 @@ rm /tmp/orion-$ORION_ENV.zip
 curl -s https://getcomposer.org/installer | php
 /bin/php /var/www/cgi-bin/composer/composer.phar install
 
-if [[ $ORION_ENV == "dev" ]] || [[ $ORION_ENV == "local" ]]; then 
-    mkdir -p /var/www/cgi-bin/debug
-    cp /tmp/debug/* /var/www/cgi-bin/debug/
-fi
+echo "Running $2"
 
-rm -rf /run/httpd/* /tmp/httpd*
-
-exec /usr/sbin/apachectl -DFOREGROUND
+cd $1
+/bin/php $2
