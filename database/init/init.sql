@@ -11,7 +11,6 @@ CREATE TABLE `books` (
   `isbn` varchar(20) DEFAULT NULL,
   `googleid` varchar(254) DEFAULT NULL,
   `poster_url` varchar(254) DEFAULT NULL,
-  `notes` varchar(2000) DEFAULT NULL,
   `created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
@@ -69,6 +68,7 @@ CREATE TABLE `g_user_books` (
   `user_id` int(11) DEFAULT NULL,
   `rank` int(11) DEFAULT NULL,
   `completed` int(11) DEFAULT NULL,
+  `notes` text,
   `g_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `g_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `g_first` timestamp NULL,

@@ -31,6 +31,8 @@ function replaceFile () {
   cat /dev/null > $1 && vi $1;
 }
 
+alias rf='replaceFile';
+
 function updateSrc () {
     wget https://orion-src.s3.us-east-2.amazonaws.com/orion-dev.zip -P /tmp
     unzip -o -u /tmp/orion-dev.zip -d /var/www/

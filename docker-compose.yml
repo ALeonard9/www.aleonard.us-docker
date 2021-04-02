@@ -28,29 +28,29 @@ services:
     links:
       - mysql-dev
     entrypoint: /data/docker-entrypoint.sh
-  orion-web-dev:
-    build:
-      context: orion/.
-      target: dev
-    image: aleonard9/orion-web:dev
-    container_name: orion_web_dev
-    ports:
-      - "80:80"
-    env_file:
-      - orion/env/dev.env
-    tty: true
-  orion-web-prod:
-    build:
-      context: orion/.
-      target: prod
-    image: aleonard9/orion-web:prod
-    container_name: orion_web_prod
-    ports:
-      - "80:80"
-      - "443:443"
-    env_file:
-      - orion/env/prod.env
-    tty: true
+  # orion-web-dev:
+  #   build:
+  #     context: orion/.
+  #     target: dev
+  #   image: aleonard9/orion-web:dev
+  #   container_name: orion_web_dev
+  #   ports:
+  #     - "80:80"
+  #   env_file:
+  #     - orion/env/dev.env
+  #   tty: true
+  # orion-web-prod:
+  #   build:
+  #     context: orion/.
+  #     target: prod
+  #   image: aleonard9/orion-web:prod
+  #   container_name: orion_web_prod
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   env_file:
+  #     - orion/env/prod.env
+  #   tty: true
   # orion-updateTv:
   #   image: aleonard9/orion-web:local
   #   container_name: orion_updateTv
