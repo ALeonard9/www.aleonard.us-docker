@@ -34,7 +34,11 @@ function replaceFile () {
 alias rf='replaceFile';
 
 function updateSrc () {
-    wget https://orion-src.s3.us-east-2.amazonaws.com/orion-dev.zip -P /tmp
-    unzip -o -u /tmp/orion-dev.zip -d /var/www/
-    rm -f /tmp/orion-dev.zip
+    wget https://orion-src.s3.us-east-2.amazonaws.com/orion-prod.zip -P /tmp
+    unzip -o -u /tmp/orion-prod.zip -d /var/www/
+    rm -f /tmp/orion-prod.zip
 }
+
+alias eb='vi ~/.bashrc';
+alias sb='source ~/.bashrc';
+

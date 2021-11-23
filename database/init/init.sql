@@ -243,6 +243,7 @@ CREATE TABLE `g_user_videogames` (
   `g_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `g_first` timestamp NULL,
   `user_id` int(11) DEFAULT NULL,
+  `100_percent` tinyint DEFAULT 0,
   PRIMARY KEY (`g_id`),
   UNIQUE KEY `unique_index` (`user_id`,`videogames_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;

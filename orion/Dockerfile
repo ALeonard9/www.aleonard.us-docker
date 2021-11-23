@@ -4,9 +4,12 @@ RUN yum -y update && \
     rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm && \
     yum clean all && \
-    yum install -y git php55w php55w-mysql php55w-pdo php55w-mcrypt mariadb unzip wget mod_ssl
+    yum install -y git php55w php55w-mysql php55w-pdo php55w-mcrypt mariadb unzip wget mod_ssl awslogs && \
+    mkdir -p /var/log/orion
 
 COPY config/apache_config/orion_local.conf /etc/httpd/conf.d/orion.conf
+
+# COPY config/awslog/awslog.conf config/awslog/awscli.conf /etc/awslogs/
 
 COPY debug /tmp/debug
 

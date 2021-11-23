@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# if [[ $ORION_ENV == "prod" ]]; then 
+#     mkdir -p /var/www/cgi-bin/debug
+#     service awslogsd start
+# fi
+
 wget https://orion-src.s3.us-east-2.amazonaws.com/orion-$ORION_ENV.zip -P /tmp
 unzip -o -u /tmp/orion-$ORION_ENV.zip -d /var/www/
 cd /var/www/cgi-bin/composer
