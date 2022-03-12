@@ -9,6 +9,8 @@ RUN yum -y update && \
 
 COPY config/apache_config/orion_local.conf /etc/httpd/conf.d/orion.conf
 
+COPY config/php/orion.ini /etc/php.d/orion.ini
+
 # COPY config/awslog/awslog.conf config/awslog/awscli.conf /etc/awslogs/
 
 COPY debug /tmp/debug

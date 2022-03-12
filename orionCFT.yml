@@ -58,6 +58,7 @@ Resources:
                 aws s3 cp s3://orion-env/prod.env /opt/orion/prod.env
                 echo "45 4 * * * root docker run -i --env-file /opt/orion/prod.env --name orion_updateTv --rm 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod /bin/bash -c '/data/runcommand-entrypoint.sh /var/www/cgi-bin/tv /var/www/cgi-bin/tv/updatetv.php' >> /var/log/updatetv.cron.log" >> /etc/cron.d/orion.cron
                 echo "45 5 * * * root docker run -i --env-file /opt/orion/prod.env --name orion_updateEpisodes --rm 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod /bin/bash -c '/data/runcommand-entrypoint.sh /var/www/cgi-bin/tv /var/www/cgi-bin/tv/updateepisodes.php' >> /var/log/updateepisodes.cron.log" >> /etc/cron.d/orion.cron
+                echo "45 6 * * * root docker run -i --env-file /opt/orion/prod.env --name orion_updateRecentEpisodes --rm 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod /bin/bash -c '/data/runcommand-entrypoint.sh /var/www/cgi-bin/tv /var/www/cgi-bin/tv/updaterecentepisodes.php' >> /var/log/updaterecentepisodes.cron.log" >> /etc/cron.d/orion.cron
                 aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 371624369200.dkr.ecr.us-east-2.amazonaws.com;docker pull 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod
                 docker run -d -p 80:80 -p 443:443 --name orion_web --env-file /opt/orion/prod.env --rm 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod /bin/bash -c "/data/docker-entrypoint.sh"
         SpotPrice: 0.004
