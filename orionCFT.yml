@@ -61,9 +61,7 @@ Resources:
                 echo "45 6 * * * root docker run -i --env-file /opt/orion/prod.env --name orion_updateRecentEpisodes --rm 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod /bin/bash -c '/data/runcommand-entrypoint.sh /var/www/cgi-bin/tv /var/www/cgi-bin/tv/updaterecentepisodes.php' >> /var/log/updaterecentepisodes.cron.log" >> /etc/cron.d/orion.cron
                 aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 371624369200.dkr.ecr.us-east-2.amazonaws.com;docker pull 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod
                 docker run -d -p 80:80 -p 443:443 --name orion_web --env-file /opt/orion/prod.env --rm 371624369200.dkr.ecr.us-east-2.amazonaws.com/orion:prod /bin/bash -c "/data/docker-entrypoint.sh"
-        SpotPrice: 0.004
+        SpotPrice: 0.01
         TargetCapacity: 1
         TerminateInstancesWithExpiration: false
         Type: maintain
-        ValidFrom: 2018-12-09T03:38:27Z
-        ValidUntil: 2022-12-09T03:38:27Z

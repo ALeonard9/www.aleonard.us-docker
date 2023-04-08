@@ -12,22 +12,22 @@ services:
       - ./database/init:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
-  orion-web-local:
-    build:
-      context: orion/.
-      target: local
-    image: aleonard9/orion-web:local
-    container_name: orion_web
-    ports:
-      - "80:80"
-    env_file:
-      - orion/env/local.env
-    tty: true
-    depends_on:
-      - mysql-dev
-    links:
-      - mysql-dev
-    entrypoint: /data/docker-entrypoint.sh
+  # orion-web-local:
+  #   build:
+  #     context: orion/.
+  #     target: local
+  #   image: aleonard9/orion-web:local
+  #   container_name: orion_web
+  #   ports:
+  #     - "80:80"
+  #   env_file:
+  #     - orion/env/local.env
+  #   tty: true
+  #   depends_on:
+  #     - mysql-dev
+  #   links:
+  #     - mysql-dev
+  #   entrypoint: /data/docker-entrypoint.sh
   # orion-web-dev:
   #   build:
   #     context: orion/.
@@ -39,18 +39,18 @@ services:
   #   env_file:
   #     - orion/env/dev.env
   #   tty: true
-  # orion-web-prod:
-  #   build:
-  #     context: orion/.
-  #     target: prod
-  #   image: aleonard9/orion-web:prod
-  #   container_name: orion_web_prod
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   env_file:
-  #     - orion/env/prod.env
-  #   tty: true
+  orion-web-prod:
+    build:
+      context: orion/.
+      target: prod
+    image: aleonard9/orion-web:prod
+    container_name: orion_web_prod
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - orion/env/prod.env
+    tty: true
   # orion-updateTv:
   #   image: aleonard9/orion-web:local
   #   container_name: orion_updateTv
