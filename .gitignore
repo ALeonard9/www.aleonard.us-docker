@@ -3,3 +3,4 @@ database/init/DummyData.sql
 *.env
 orion/config/ssl/*
 .DS_Store
+.vscode/*
