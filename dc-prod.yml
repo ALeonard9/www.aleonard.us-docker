@@ -1,0 +1,51 @@
+services:
+  mysql-prod:
+    image: mysql:5.7.44
+    container_name: ${LZ}_orion_db_prod
+    env_file:
+      - orion/env/prod.env
+    volumes:
+      - ./database/data/${ORION_ENV}:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:${MYSQL_PORT}"
+    networks:
+      - gs_network
+  orion-web-prod:
+    image: aleonard9/orion-web:local
+    container_name: ${WEB_URL}
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - orion/env/prod.env
+    tty: true
+    depends_on:
+      - mysql-prod
+    links:
+      - mysql-prod
+    networks:
+      - gs_network
+  orion-cf-tunnel-dev:
+    container_name: orion_cloudflared_tunnel_${ORION_ENV}
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel --pq run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - gs_network
+  # orion-updateTv:
+  #   image: aleonard9/orion-web:local
+  #   container_name: gs_orion_updateTv
+  #   depends_on:
+  #     - mysql-dev
+  #   links:
+  #     - mysql-dev
+  #   env_file:
+  #     - orion/env/local.env
+  #   entrypoint: /bin/sh /data/runcommand-entrypoint.sh /var/www/cgi-bin/tv /var/www/cgi-bin/tv/updatetv.php
+
+networks:
+  gs_network: 
+    external: true

@@ -1,0 +1,41 @@
+services:
+  mysql-local:
+    image: mysql:5.7.44
+    env_file:
+      - orion/env/${ORION_ENV}.env
+    container_name: ${LZ}_orion_db_${ORION_ENV}
+    volumes:
+      - ./database/data/${ORION_ENV}:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3304:${MYSQL_PORT}"
+    networks:
+      - orion_network_local
+  orion-web-local:
+    build:
+      context: orion/.
+      target: local
+    image: aleonard9/orion-web:local
+    container_name: ${WEB_URL}
+    ports:
+      - "78:80"
+    env_file:
+      - orion/env/local.env
+    tty: true
+    depends_on:
+      - mysql-local
+    links:
+      - mysql-local
+    networks:
+      - orion_network_local
+  orion-cf-tunnel:
+    container_name: orion_cloudflared_tunnel_${ORION_ENV}
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel --pq run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - orion_network_local
+networks:
+  orion_network_local: {}
