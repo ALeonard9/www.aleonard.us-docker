@@ -1,6 +1,6 @@
 # www.aleonard.us-docker
 
-Rearchitecting infrastructure build to use Docker
+Rearchitecting infrastructure to run locally on Docker
 
 ## Updating
 

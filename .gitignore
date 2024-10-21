@@ -1,6 +1,8 @@
-database/data/*
-database/init/DummyData.sql
 *.env
+cron/log/*
+database/backup/log/*
+database/data/*
+database/init/1_dummy_data.sql
 orion/config/ssl/*
 .DS_Store
 .vscode/*
