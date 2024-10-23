@@ -2,29 +2,29 @@ services:
   mysql-dev:
     image: mysql:5.7.44
     env_file:
-      - orion/env/dev.env
-    container_name: ${LZ}_orion_db_dev
+      - orion/env/${ORION_ENV}.env
+    container_name: ${LZ}_orion_db_${ORION_ENV}
     volumes:
       - ./database/data/${ORION_ENV}:/var/lib/mysql
       - ./database/init:/docker-entrypoint-initdb.d
     ports:
       - "3305:${MYSQL_PORT}"
     networks:
-      - gs_network_dev
+      - gs_network_${ORION_ENV}
   orion-web-dev:
-    image: aleonard9/orion-web:local
+    image: aleonard9/orion-web:${ORION_ENV}
     container_name: ${WEB_URL}
     ports:
       - "79:80"
     env_file:
-      - orion/env/dev.env
+      - orion/env/${ORION_ENV}.env
     tty: true
     depends_on:
       - mysql-dev
     links:
       - mysql-dev
     networks:
-      - gs_network_dev
+      - gs_network_${ORION_ENV}
   orion-cf-tunnel-dev:
     container_name: orion_cloudflared_tunnel_${ORION_ENV}
     image: cloudflare/cloudflared
@@ -33,7 +33,7 @@ services:
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
     networks:
-      - gs_network_dev
+      - gs_network_${ORION_ENV}
 networks:
   gs_network_dev: 
     external: true

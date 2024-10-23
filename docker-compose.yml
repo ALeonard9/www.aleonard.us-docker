@@ -10,24 +10,24 @@ services:
     ports:
       - "3304:${MYSQL_PORT}"
     networks:
-      - orion_network_local
+      - orion_network_${ORION_ENV}
   orion-web-local:
     build:
       context: orion/.
       target: local
-    image: aleonard9/orion-web:local
+    image: aleonard9/orion-web:${ORION_ENV}
     container_name: ${WEB_URL}
     ports:
       - "78:80"
     env_file:
-      - orion/env/local.env
+      - orion/env/${ORION_ENV}.env
     tty: true
     depends_on:
       - mysql-local
     links:
       - mysql-local
     networks:
-      - orion_network_local
+      - orion_network_${ORION_ENV}
   orion-cf-tunnel:
     container_name: orion_cloudflared_tunnel_${ORION_ENV}
     image: cloudflare/cloudflared
@@ -36,6 +36,6 @@ services:
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
     networks:
-      - orion_network_local
+      - orion_network_${ORION_ENV}
 networks:
   orion_network_local: {}
