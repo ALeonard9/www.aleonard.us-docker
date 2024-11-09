@@ -1,7 +1,8 @@
 services:
   mysql-prod:
-    image: mysql:5.7.44
     container_name: ${LZ}_orion_db_${ORION_ENV}
+    image: mysql:5.7.44
+    restart: unless-stopped
     env_file:
       - orion/env/${ORION_ENV}.env
     volumes:
@@ -12,11 +13,11 @@ services:
     networks:
       - gs_network
   orion-web-prod:
-    image: aleonard9/orion-web:${ORION_ENV}
     container_name: ${WEB_URL}
+    image: aleonard9/orion-web:${ORION_ENV}
+    restart: unless-stopped
     env_file:
       - orion/env/${ORION_ENV}.env
-    tty: true
     depends_on:
       - mysql-prod
     links:

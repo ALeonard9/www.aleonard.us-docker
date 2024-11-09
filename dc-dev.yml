@@ -1,9 +1,10 @@
 services:
   mysql-dev:
+    container_name: ${LZ}_orion_db_${ORION_ENV}
     image: mysql:5.7.44
+    restart: unless-stopped
     env_file:
       - orion/env/${ORION_ENV}.env
-    container_name: ${LZ}_orion_db_${ORION_ENV}
     volumes:
       - ./database/data/${ORION_ENV}:/var/lib/mysql
       - ./database/init:/docker-entrypoint-initdb.d
@@ -12,13 +13,13 @@ services:
     networks:
       - gs_network_${ORION_ENV}
   orion-web-dev:
-    image: aleonard9/orion-web:${ORION_ENV}
     container_name: ${WEB_URL}
-    ports:
-      - "79:80"
+    image: aleonard9/orion-web:${ORION_ENV}
+    restart: unless-stopped
     env_file:
       - orion/env/${ORION_ENV}.env
-    tty: true
+    ports:
+      - "79:80"
     depends_on:
       - mysql-dev
     links:
